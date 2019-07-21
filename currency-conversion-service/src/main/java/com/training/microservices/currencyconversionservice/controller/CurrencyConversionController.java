@@ -1,6 +1,8 @@
 package com.training.microservices.currencyconversionservice.controller;
 
+import com.training.microservices.currencyconversionservice.CurrencyExchangeServiceProxy;
 import com.training.microservices.currencyconversionservice.model.CurrencyConversionBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,10 @@ import java.util.Map;
  */
 @RestController
 public class CurrencyConversionController {
+
+
+    @Autowired
+    private CurrencyExchangeServiceProxy proxy;
 
 
     @GetMapping("/currency-conversion/from/{from}/to/{to}/quantity/{quantity}")
@@ -37,4 +43,14 @@ public class CurrencyConversionController {
         return currencyConversionBean;
     }
 
+
+    @GetMapping("/currency-conversion-feign/from/{from}/to/{to}/quantity/{quantity}")
+    public CurrencyConversionBean calculateValueFeign(@PathVariable String from, @PathVariable String to, @PathVariable BigDecimal quantity) {
+
+        CurrencyConversionBean response = proxy.retrieveExchangeValue(from,to);
+
+        CurrencyConversionBean currencyConversionBean = new CurrencyConversionBean(response.getId(), from, to, response.getExchangeFactor(), quantity, quantity.multiply(response.getExchangeFactor()), response.getPort());
+
+        return currencyConversionBean;
+    }
 }
