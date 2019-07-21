@@ -1,6 +1,9 @@
 package com.training.microservices.currencyexchangeservice.Controller;
 
 import com.training.microservices.currencyexchangeservice.Model.ExchangeValue;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,10 +16,18 @@ import java.math.BigDecimal;
 @RestController
 public class CurrencyExchangeController {
 
-    @GetMapping("/currency-exchange/from/{from}/to/{to}/{value}")
-    public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to, @PathVariable double value) {
+    @Autowired
+    private Environment environment;
 
-        return new ExchangeValue(Long.valueOf(1), from, to, BigDecimal.valueOf(1000));
+    @GetMapping("/currency-exchange/from/{from}/to/{to}")
+    public ExchangeValue retrieveExchangeValue(@PathVariable String from, @PathVariable String to) {
+
+
+        ExchangeValue exchangeValue = new ExchangeValue(Long.valueOf(1), from, to, BigDecimal.valueOf(1000));
+
+        exchangeValue.setPort(Integer.parseInt(environment.getProperty("local.server.port")));
+
+        return exchangeValue;
     }
 
 }

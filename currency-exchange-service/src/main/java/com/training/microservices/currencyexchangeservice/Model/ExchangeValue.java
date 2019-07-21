@@ -1,19 +1,30 @@
 package com.training.microservices.currencyexchangeservice.Model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 
 /**
  * Created by adere on 21.07.2019.
  */
+@Entity
 public class ExchangeValue {
 
+    @Id
     private Long id;
 
+
+    @Column(name = "currency_from")
     private String from;
 
+
+    @Column(name = "currency_to")
     private String to;
 
     private BigDecimal exchangeFactor;
+
+    private int port;
 
     public ExchangeValue() {
     }
@@ -55,5 +66,13 @@ public class ExchangeValue {
 
     public void setExchangeFactor(BigDecimal exchangeFactor) {
         this.exchangeFactor = exchangeFactor;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }
