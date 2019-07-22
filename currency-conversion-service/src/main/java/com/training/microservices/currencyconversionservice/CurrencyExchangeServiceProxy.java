@@ -1,6 +1,7 @@
 package com.training.microservices.currencyconversionservice;
 
 import com.training.microservices.currencyconversionservice.model.CurrencyConversionBean;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 /**
  * Created by adere on 22.07.2019.
  */
-@FeignClient(name = "currency-exchange-service", url = "localhost:8000")
+//@FeignClient(name = "currency-exchange-service", url = "localhost:8000")
+@FeignClient(name = "currency-exchange-service")
+@RibbonClient(name = "currency-exchange-service")
 public interface CurrencyExchangeServiceProxy {
 
 
